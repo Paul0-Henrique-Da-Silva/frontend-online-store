@@ -8,7 +8,9 @@ function App() {
     <main>
       <p>Iahuuuu!</p>
       <Router>
-        <Route exact path="/" component={ ProductsList } />
+        <Switch>
+          <Route exact path="/" component={ ProductsList } />
+        </Switch>
       </Router>
     </main>
   );
