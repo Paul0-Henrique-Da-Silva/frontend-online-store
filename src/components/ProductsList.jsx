@@ -87,9 +87,11 @@ class ProductsList extends React.Component {
            <div>
              {recebeProdutos.map((produto) => (
                <div key={ produto.id } data-testid="product">
-                 <p>{produto.title}</p>
-                 <img src={ produto.thumbnail } alt={ produto.title } />
-                 <p>{produto.price}</p>
+                 {/* <Link to={`/productdetail/:${produto.id}`} render={()=><ProductDetail produto={ produto }/>}> */}
+                  <p>{produto.title}</p>
+                  <img src={ produto.thumbnail } alt={ produto.title } />
+                  <p>{produto.price}</p>
+                 {/* </Link> */}
                </div>))}
            </div>)}
 
