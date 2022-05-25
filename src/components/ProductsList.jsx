@@ -16,8 +16,8 @@ class ProductsList extends React.Component {
 
  handleChange = ({ target }) => {
    const { name, value } = target;
-   if (name === "idCategoriaSelecionada") {
-    this.setState({ [name]: value }, this.selecionarPorCategoria);
+   if (name === 'idCategoriaSelecionada') {
+     this.setState({ [name]: value }, this.selecionarPorCategoria);
    }
    this.setState({ [name]: value });
  }
