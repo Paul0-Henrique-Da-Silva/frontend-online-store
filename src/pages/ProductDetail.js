@@ -1,8 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class ProductDetail extends React.Component {
+  state = {
+    qtd: 1,
+  }
+
   render() {
+    const { qtd } = this.state;
     const { location: { state } } = this.props;
     const { produto: {
       title,
@@ -24,6 +30,14 @@ class ProductDetail extends React.Component {
             ))}
           </ul>
         </div>
+        <Link
+          data-testid="product-detail-add-to-cart"
+          to={
+            { pathname: '/shoppingCart', state: { state, quantidade: qtd } }
+          }
+        >
+          Comprar
+        </Link>
       </div>
     );
   }
