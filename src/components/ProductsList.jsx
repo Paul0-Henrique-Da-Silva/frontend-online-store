@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
+// import ProductDetail from '../pages/ProductDetail';
 
 class ProductsList extends React.Component {
   state = {
@@ -31,7 +32,6 @@ class ProductsList extends React.Component {
 
  selecionarPorCategoria = async () => {
    const { idCategoriaSelecionada } = this.state;
-   console.log(idCategoriaSelecionada);
    const resultApi = await getProductsFromCategoryAndQuery(idCategoriaSelecionada, null);
    this.setState({ recebeProdutos: resultApi.results });
  }
@@ -87,14 +87,17 @@ class ProductsList extends React.Component {
            <div>
              {recebeProdutos.map((produto) => (
                <div key={ produto.id } data-testid="product">
-                 {/* <Link
-                  to={`/productdetail/:${produto.id}`}
-                  render={()=><ProductDetail produto={ produto }/>}>
-                */}
-                 <p>{produto.title}</p>
-                 <img src={ produto.thumbnail } alt={ produto.title } />
-                 <p>{produto.price}</p>
-                 {/* </Link> */}
+                 <Link
+                   data-testid="product-detail-link"
+                   to={
+                     { pathname: `/productdetail/${produto.id}`,
+                       state: { produto },
+                    }
+                    }>
+                   <p>{produto.title}</p>
+                   <img src={ produto.thumbnail } alt={ produto.title } />
+                   <p>{produto.price}</p>
+                 </Link>
                </div>))}
            </div>)}
 
@@ -103,4 +106,4 @@ class ProductsList extends React.Component {
  }
 }
 
-export default ProductsList;
+export default withRouter(ProductsList);
