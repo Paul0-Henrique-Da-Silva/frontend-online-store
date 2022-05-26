@@ -1,14 +1,15 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class ProductDetail extends React.Component {
   render() {
+    const { location: { state } } = this.props;
     const { produto: {
       title,
       price,
       thumbnail,
       attributes,
-     } } = this.props.location.state;
+    } } = state;
     console.log(attributes);
     return (
       <div>
@@ -27,5 +28,10 @@ class ProductDetail extends React.Component {
     );
   }
 }
+
+ProductDetail.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.objectOf }).isRequired,
+};
 
 export default ProductDetail;

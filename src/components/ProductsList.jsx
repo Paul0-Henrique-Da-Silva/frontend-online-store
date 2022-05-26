@@ -90,17 +90,15 @@ class ProductsList extends React.Component {
                  <Link
                    data-testid="product-detail-link"
                    to={
-                     { pathname: `/productdetail/${produto.id}`,
-                       state: { produto },
-                    }
-                    }>
+                     { pathname: `/productdetail/${produto.id}`, state: { produto } }
+                   }
+                 >
                    <p>{produto.title}</p>
                    <img src={ produto.thumbnail } alt={ produto.title } />
                    <p>{produto.price}</p>
                  </Link>
                </div>))}
            </div>)}
-
      </div>
    );
  }
