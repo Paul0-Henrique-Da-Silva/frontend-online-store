@@ -4,6 +4,7 @@ import { getCategories, getProductsFromCategoryAndQuery } from '../services/api'
 
 class ProductsList extends React.Component {
   state = {
+    idCategoriaSelecionada: '',
     categorias: [],
     inputSearch: '',
     recebeProdutos: [],
@@ -15,6 +16,9 @@ class ProductsList extends React.Component {
 
  handleChange = ({ target }) => {
    const { name, value } = target;
+   if (name === 'idCategoriaSelecionada') {
+     this.setState({ [name]: value }, this.selecionarPorCategoria);
+   }
    this.setState({ [name]: value });
  }
 
@@ -25,10 +29,16 @@ class ProductsList extends React.Component {
    });
  };
 
+ selecionarPorCategoria = async () => {
+   const { idCategoriaSelecionada } = this.state;
+   console.log(idCategoriaSelecionada);
+   const resultApi = await getProductsFromCategoryAndQuery(idCategoriaSelecionada, null);
+   this.setState({ recebeProdutos: resultApi.results });
+ }
+
  handleClick = async () => {
    const { inputSearch } = this.state;
    const resultApi = await getProductsFromCategoryAndQuery(null, inputSearch);
-   console.log(resultApi);
    this.setState({ recebeProdutos: resultApi.results });
  }
 
@@ -48,9 +58,9 @@ class ProductsList extends React.Component {
                { categoria.name }
                <input
                  type="radio"
-                 name="categoria-selecionada"
+                 name="idCategoriaSelecionada"
                  id={ categoria.id }
-                 value={ categoria.name }
+                 value={ categoria.id }
                  onChange={ this.handleChange }
                />
              </label>
@@ -77,9 +87,14 @@ class ProductsList extends React.Component {
            <div>
              {recebeProdutos.map((produto) => (
                <div key={ produto.id } data-testid="product">
+                 {/* <Link
+                  to={`/productdetail/:${produto.id}`}
+                  render={()=><ProductDetail produto={ produto }/>}>
+                */}
                  <p>{produto.title}</p>
                  <img src={ produto.thumbnail } alt={ produto.title } />
                  <p>{produto.price}</p>
+                 {/* </Link> */}
                </div>))}
            </div>)}
 
