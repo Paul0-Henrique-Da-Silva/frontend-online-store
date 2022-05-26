@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 class ProductDetail extends React.Component {
-  state = {
-    qtd: 1,
-  }
-
   render() {
-    const { qtd } = this.state;
     const { location: { state } } = this.props;
     const { produto: {
       title,
@@ -16,9 +11,13 @@ class ProductDetail extends React.Component {
       thumbnail,
       attributes,
     } } = state;
-    console.log(attributes);
+
+    const produto = [state.produto];
+    console.log('state dentro do render: ', produto);
+
     return (
       <div>
+        <Link to="/shoppingCart" data-testid="shopping-cart-button">Carrinho</Link>
         <h1>Detalhes do produto</h1>
         <h3 data-testid="product-detail-name">{title}</h3>
         <h2>{price}</h2>
@@ -33,7 +32,7 @@ class ProductDetail extends React.Component {
         <Link
           data-testid="product-detail-add-to-cart"
           to={
-            { pathname: '/shoppingCart', state: { state, quantidade: qtd } }
+            { pathname: '/shoppingCart', state: { carrinho: produto } }
           }
         >
           Comprar

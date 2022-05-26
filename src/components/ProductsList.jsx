@@ -9,6 +9,7 @@ class ProductsList extends React.Component {
     categorias: [],
     inputSearch: '',
     recebeProdutos: [],
+    carrinho: [],
   }
 
   componentDidMount() {
@@ -42,14 +43,32 @@ class ProductsList extends React.Component {
    this.setState({ recebeProdutos: resultApi.results });
  }
 
+ colocarNoCarrinho = (event) => {
+   const { recebeProdutos, carrinho } = this.state;
+   const productId = event.target.value;
+   const produtoSelecionado = recebeProdutos
+     .filter((produto) => productId === produto.id);
+   carrinho.push(produtoSelecionado[0]);
+   this.setState({
+     carrinho,
+   });
+ }
+
  render() {
-   const { categorias, inputSearch, recebeProdutos } = this.state;
+   const { categorias, inputSearch, recebeProdutos, carrinho } = this.state;
    return (
      <div>
        <h1 data-testid="home-initial-message">
          Digite algum termo de pesquisa ou escolha uma categoria.
        </h1>
-       <Link to="/shoppingCart" data-testid="shopping-cart-button">Carrinho</Link>
+       <Link
+         data-testid="shopping-cart-button"
+         to={
+           { pathname: '/shoppingcart', state: { carrinho } }
+         }
+       >
+         Carrinho
+       </Link>
        <div>
          <p>Categorias:</p>
          {
@@ -97,6 +116,14 @@ class ProductsList extends React.Component {
                    <img src={ produto.thumbnail } alt={ produto.title } />
                    <p>{produto.price}</p>
                  </Link>
+                 <button
+                   data-testid="product-add-to-cart"
+                   type="button"
+                   onClick={ this.colocarNoCarrinho }
+                   value={ produto.id }
+                 >
+                   Adicionar ao Carrinho
+                 </button>
                </div>))}
            </div>)}
      </div>

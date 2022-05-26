@@ -1,39 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import guardaNoLocalStor from '../services/atualizaLocalStor';
 
 class ShoppingCart extends React.Component {
 state = {
-  carrinho: [],
+  compra: [],
 }
 
 componentDidMount() {
   this.atualizarCarrinho();
 }
 
+componentDidUpdate() {
+  const { compra } = this.state;
+  guardaNoLocalStor(compra);
+}
+
 atualizarCarrinho = () => {
-  const { location: { state: { quantidade, state } } } = this.props;
-  const { produto: { title, price } } = state;
-  const novoProduto = { title, price, quantidade };
+  const { location: { state: { carrinho } } } = this.props;
   this.setState((prevState) => ({
-    carrinho: [...prevState.carrinho, novoProduto] }));
+    compra: [...prevState.compra, carrinho] }));
 }
 
 render() {
-  const { carrinho } = this.state;
+  const { compra } = this.state;
   return (
     <div>
       <h1>Meu carrinho de compras</h1>
-      {!carrinho ? <h1 data-testid="shopping-cart-empty-message">
-        Seu carrinho está vazio
-      </h1>
+
+      {!compra ? (
+        <h1 data-testid="shopping-cart-empty-message">
+          Seu carrinho está vazio
+        </h1>
+      )
         : (
-          carrinho.map((produto, index) => (
+
+          compra.map((produto, index) => (
             <div key={ index }>
               <p data-testid="shopping-cart-product-name">{produto.title}</p>
               <p>{produto.price}</p>
               <p data-testid="shopping-cart-product-quantity">{produto.quantidade}</p>
             </div>
           ))
+
         )}
     </div>
   );
