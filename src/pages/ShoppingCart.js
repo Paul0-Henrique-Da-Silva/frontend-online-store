@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class ShoppingCart extends React.Component {
 state = {
@@ -16,6 +17,27 @@ atualizarCarrinho = () => {
   const { location: { state: { carrinho } } } = this.props;
   this.setState({
     compra: carrinho }, this.filtraCarrinho);
+}
+
+diminuiQuantidade = (event) => {
+  const { quantidade } = this.state;
+  const index = event.target.value;
+  if (quantidade[index].length > 1) {
+    quantidade[index].pop();
+    this.setState({
+      quantidade,
+    });
+  }
+}
+
+aumentarQuantidade = (event) => {
+  const { quantidade } = this.state;
+  const index = event.target.value;
+  const itemSelecionado = quantidade[index][0];
+  quantidade[index].push(itemSelecionado);
+  this.setState({
+    quantidade,
+  });
 }
 
 filtraCarrinho = () => {
@@ -42,12 +64,36 @@ render() {
             <div key={ index }>
               <p data-testid="shopping-cart-product-name">{produto.title}</p>
               <p>{produto.price}</p>
+              <button
+                type="button"
+                data-testid="product-decrease-quantity"
+                onClick={ this.diminuiQuantidade }
+                value={ index }
+              >
+                -
+              </button>
               <p data-testid="shopping-cart-product-quantity">
                 {quantidade[index].length}
               </p>
+              <button
+                type="button"
+                data-testid="product-increase-quantity"
+                onClick={ this.aumentarQuantidade }
+                value={ index }
+              >
+                +
+              </button>
             </div>
           ))
         )}
+      <Link to={ { pathname: '/purchase', state: { produtos, quantidade } } }>
+        <button
+          type="button"
+          data-testid="checkout-products"
+        >
+          Finalizar Compra
+        </button>
+      </Link>
     </div>
   );
 }
