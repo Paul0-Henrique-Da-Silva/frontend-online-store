@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
-// import ProductDetail from '../pages/ProductDetail';
 
 class ProductsList extends React.Component {
   state = {
@@ -114,6 +113,10 @@ class ProductsList extends React.Component {
                  >
                    <p>{produto.title}</p>
                    <img src={ produto.thumbnail } alt={ produto.title } />
+                   <span>
+                     { produto.shipping.free_shipping
+                     && <p data-testid="free-shipping">Frete grátis</p>}
+                   </span>
                    <p>{produto.price}</p>
                  </Link>
                  <button

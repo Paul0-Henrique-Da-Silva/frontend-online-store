@@ -31,7 +31,6 @@ diminuiQuantidade = (event) => {
 }
 
 aumentarQuantidade = (event, qtdDisponivel) => {
-  console.log(qtdDisponivel);
   const { quantidade } = this.state;
   const index = event.target.value;
   const itemSelecionado = quantidade[index][0];
@@ -108,9 +107,14 @@ render() {
 
 ShoppingCart.propTypes = {
   location: PropTypes.shape({
-    state: PropTypes.objectOf }).isRequired,
+    state: PropTypes.objectOf }),
   state: PropTypes.shape({
-    carrinho: PropTypes.objectOf }).isRequired,
+    carrinho: PropTypes.objectOf }),
+};
+
+ShoppingCart.defaultProps = {
+  location: {},
+  state: {},
 };
 
 export default ShoppingCart;
