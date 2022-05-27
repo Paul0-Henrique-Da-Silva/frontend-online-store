@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import guardaNoLocalStor from '../services/atualizaLocalStor';
 
 class ShoppingCart extends React.Component {
 state = {
@@ -11,11 +10,6 @@ state = {
 
 componentDidMount() {
   this.atualizarCarrinho();
-}
-
-componentDidUpdate() {
-  const { compra } = this.state;
-  guardaNoLocalStor(compra);
 }
 
 atualizarCarrinho = () => {
@@ -65,9 +59,7 @@ ShoppingCart.propTypes = {
   location: PropTypes.shape({
     state: PropTypes.objectOf }).isRequired,
   state: PropTypes.shape({
-    title: PropTypes.string,
-    price: PropTypes.string,
-  }).isRequired,
+    carrinho: PropTypes.objectOf }).isRequired,
 };
 
 export default ShoppingCart;
