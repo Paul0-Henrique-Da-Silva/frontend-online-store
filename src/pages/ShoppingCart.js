@@ -5,6 +5,8 @@ import guardaNoLocalStor from '../services/atualizaLocalStor';
 class ShoppingCart extends React.Component {
 state = {
   compra: [],
+  produtos: [],
+  quantidade: [],
 }
 
 componentDidMount() {
@@ -18,28 +20,38 @@ componentDidUpdate() {
 
 atualizarCarrinho = () => {
   const { location: { state: { carrinho } } } = this.props;
-  this.setState((prevState) => ({
-    compra: [...prevState.compra, carrinho] }));
+  this.setState({
+    compra: carrinho }, this.filtraCarrinho);
+}
+
+filtraCarrinho = () => {
+  const { compra } = this.state;
+  const produtos = [...new Set(compra)];
+  const quantidade = produtos.map((produto) => compra
+    .filter((item) => item.id === produto.id));
+  this.setState({ produtos, quantidade });
 }
 
 render() {
-  const { compra } = this.state;
+  const { produtos, quantidade } = this.state;
   return (
     <div>
       <h1>Meu carrinho de compras</h1>
 
-      {!compra ? (
+      {(produtos.length === 0) ? (
         <h1 data-testid="shopping-cart-empty-message">
           Seu carrinho está vazio
         </h1>
       )
         : (
 
-          compra.map((produto, index) => (
+          produtos.map((produto, index) => (
             <div key={ index }>
               <p data-testid="shopping-cart-product-name">{produto.title}</p>
               <p>{produto.price}</p>
-              <p data-testid="shopping-cart-product-quantity">{produto.quantidade}</p>
+              <p data-testid="shopping-cart-product-quantity">
+                {quantidade[index].length}
+              </p>
             </div>
           ))
 
