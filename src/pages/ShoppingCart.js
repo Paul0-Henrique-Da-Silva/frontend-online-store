@@ -38,7 +38,6 @@ render() {
         </h1>
       )
         : (
-
           produtos.map((produto, index) => (
             <div key={ index }>
               <p data-testid="shopping-cart-product-name">{produto.title}</p>
@@ -48,7 +47,6 @@ render() {
               </p>
             </div>
           ))
-
         )}
     </div>
   );
