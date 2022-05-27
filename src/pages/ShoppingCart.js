@@ -86,6 +86,7 @@ render() {
             </div>
           ))
         )}
+
       <Link to={ { pathname: '/purchase', state: { produtos, quantidade } } }>
         <button
           type="button"
