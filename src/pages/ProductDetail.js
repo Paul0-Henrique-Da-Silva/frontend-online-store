@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import LinkToCart from '../components/LinkToCart';
 
 class ProductDetail extends React.Component {
   state = {
-    carrinho: [],
     comentariosArquivados: [],
+    getRender: '',
   }
 
   componentDidMount() {
@@ -18,9 +18,32 @@ class ProductDetail extends React.Component {
     }
   }
 
-  colocarNoCarrinho = (produto) => {
-    const { carrinho } = this.state;
-    this.setState({ carrinho: [...carrinho, produto] });
+  colocarNoCarrinho = () => {
+    const { location: { state } } = this.props;
+    const { produto } = state;
+    const { getRender } = this.state;
+    let conteudoCarrinho = localStorage.getItem('carrinho');
+    if (conteudoCarrinho === null) {
+      const arrProduto = [produto];
+      const carrinhoString = JSON.stringify(arrProduto);
+      localStorage.setItem('carrinho', carrinhoString);
+      this.setState({
+        getRender: 'walk on...',
+      });
+    }
+    if (conteudoCarrinho !== null) {
+      conteudoCarrinho = JSON.parse(conteudoCarrinho);
+      conteudoCarrinho.push(produto);
+      const carrinhoString = JSON.stringify(conteudoCarrinho);
+      localStorage.setItem('carrinho', carrinhoString);
+      console.log(getRender);
+      this.setState({
+        getRender: 'walk on mon no plus...',
+      });
+    }
+    let contador = localStorage.getItem('quantidade');
+    contador = parseInt(contador, 10) + 1;
+    localStorage.setItem('quantidade', contador);
   }
 
   handleChange = ({ target }) => {
@@ -57,36 +80,25 @@ class ProductDetail extends React.Component {
       price,
       thumbnail,
       attributes,
-      /// ////////
       shipping,
-      /// ////////
     } } = state;
-    const { carrinho, comentario, email, comentariosArquivados } = this.state;
+    const { comentario, email, comentariosArquivados } = this.state;
     const produto = [state.produto];
     const aval1 = 1;
     const aval2 = 2;
     const aval3 = 3;
     const aval4 = 4;
     const aval5 = 5;
-
     return (
       <div>
-        <Link
-          data-testid="shopping-cart-button"
-          to={ { pathname: '/shoppingcart', state: { carrinho } } }
-        >
-          Carrinho
-        </Link>
-
+        <LinkToCart />
         <h1>Detalhes do produto</h1>
         <h3 data-testid="product-detail-name">{title}</h3>
         <h2>{price}</h2>
         <img src={ thumbnail } alt={ title } />
-        {/* /// //////////// */}
         <span>
           { shipping.free_shipping && <p>Frete grátis</p> }
         </span>
-        {/* /// ////////////////// */}
         <div>
           <ul>
             { attributes.map((atributo, index) => (
@@ -98,7 +110,7 @@ class ProductDetail extends React.Component {
         <button
           data-testid="product-detail-add-to-cart"
           type="button"
-          onClick={ () => this.colocarNoCarrinho(...produto) }
+          onClick={ this.colocarNoCarrinho }
           value={ produto.id }
         >
           Adicionar ao Carrinho
@@ -181,11 +193,7 @@ class ProductDetail extends React.Component {
 
 ProductDetail.propTypes = {
   location: PropTypes.shape({
-    state: PropTypes.objectOf }),
-};
-
-ProductDetail.defaultProps = {
-  location: {},
+    state: PropTypes.objectOf }).isRequired,
 };
 
 export default ProductDetail;
