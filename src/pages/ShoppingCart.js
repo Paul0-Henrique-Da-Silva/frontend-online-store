@@ -34,9 +34,7 @@ diminuiQuantidade = (event) => {
     let conteudoCarrinho = localStorage.getItem('carrinho');
     conteudoCarrinho = JSON.parse(conteudoCarrinho);
     const popIndex = conteudoCarrinho.findIndex((itemCarr) => itemCarr.id === itemId);
-    console.log(conteudoCarrinho);
     conteudoCarrinho.splice(popIndex, 1);
-    console.log(conteudoCarrinho);
     const carrinhoString = JSON.stringify(conteudoCarrinho);
     localStorage.setItem('carrinho', carrinhoString);
     let contador = localStorage.getItem('quantidade');
@@ -47,14 +45,13 @@ diminuiQuantidade = (event) => {
 
 aumentarQuantidade = (event, qtdDisponivel) => {
   const { quantidade } = this.state;
-  console.log(quantidade.length);
   const index = event.target.value;
   const itemSelecionado = quantidade[index][0];
   if (qtdDisponivel > 0) {
     quantidade[index].push(itemSelecionado);
     this.setState({
       quantidade,
-    }, console.log(quantidade.length));
+    });
     let conteudoCarrinho = localStorage.getItem('carrinho');
     conteudoCarrinho = JSON.parse(conteudoCarrinho);
     conteudoCarrinho.push(itemSelecionado);
@@ -83,7 +80,6 @@ filtraCompra = (compra) => {
 filtraCarrinho = () => {
   const { compra } = this.state;
   const produtos = this.filtraCompra(compra);
-  console.log(produtos);
   const quantidade = produtos.map((produto) => compra
     .filter((item) => item.id === produto.id));
   this.setState({ produtos, quantidade });
