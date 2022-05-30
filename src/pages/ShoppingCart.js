@@ -47,13 +47,14 @@ diminuiQuantidade = (event) => {
 
 aumentarQuantidade = (event, qtdDisponivel) => {
   const { quantidade } = this.state;
+  console.log(quantidade.length);
   const index = event.target.value;
   const itemSelecionado = quantidade[index][0];
   if (qtdDisponivel > 0) {
     quantidade[index].push(itemSelecionado);
     this.setState({
       quantidade,
-    });
+    }, console.log(quantidade.length));
     let conteudoCarrinho = localStorage.getItem('carrinho');
     conteudoCarrinho = JSON.parse(conteudoCarrinho);
     conteudoCarrinho.push(itemSelecionado);
