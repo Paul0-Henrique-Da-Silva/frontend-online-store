@@ -113,10 +113,12 @@ class ProductsList extends React.Component {
                  >
                    <p>{produto.title}</p>
                    <img src={ produto.thumbnail } alt={ produto.title } />
+                   //////////////
                    <span>
                      { produto.shipping.free_shipping
                      && <p data-testid="free-shipping">Frete grátis</p>}
                    </span>
+                   ///////////////////////
                    <p>{produto.price}</p>
                  </Link>
                  <button

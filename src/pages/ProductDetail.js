@@ -57,7 +57,9 @@ class ProductDetail extends React.Component {
       price,
       thumbnail,
       attributes,
+      /// ////////
       shipping,
+      /// ////////
     } } = state;
     const { carrinho, comentario, email, comentariosArquivados } = this.state;
     const produto = [state.produto];
@@ -80,9 +82,11 @@ class ProductDetail extends React.Component {
         <h3 data-testid="product-detail-name">{title}</h3>
         <h2>{price}</h2>
         <img src={ thumbnail } alt={ title } />
+        {/* /// //////////// */}
         <span>
           { shipping.free_shipping && <p>Frete grátis</p> }
         </span>
+        {/* /// ////////////////// */}
         <div>
           <ul>
             { attributes.map((atributo, index) => (

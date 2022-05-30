@@ -30,6 +30,7 @@ diminuiQuantidade = (event) => {
   }
 }
 
+/// //////////
 aumentarQuantidade = (event, qtdDisponivel) => {
   const { quantidade } = this.state;
   const index = event.target.value;
@@ -41,6 +42,7 @@ aumentarQuantidade = (event, qtdDisponivel) => {
     });
   }
 }
+/// /////////////
 
 filtraCarrinho = () => {
   const { compra } = this.state;
@@ -80,9 +82,11 @@ render() {
               <button
                 type="button"
                 data-testid="product-increase-quantity"
+                /// //////////
                 onClick={ (event) => this
                   .aumentarQuantidade(event, produto
                     .available_quantity - quantidade[index].length) }
+                /// ////////////
                 value={ index }
               >
                 +
