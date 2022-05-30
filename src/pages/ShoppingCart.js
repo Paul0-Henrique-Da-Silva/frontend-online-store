@@ -14,35 +14,75 @@ componentDidMount() {
 }
 
 atualizarCarrinho = () => {
-  const { location: { state: { carrinho } } } = this.props;
-  this.setState({
-    compra: carrinho }, this.filtraCarrinho);
+  let carrinho = localStorage.getItem('carrinho');
+  if (carrinho !== null) {
+    carrinho = JSON.parse(carrinho);
+    this.setState({
+      compra: carrinho }, this.filtraCarrinho);
+  }
 }
 
 diminuiQuantidade = (event) => {
   const { quantidade } = this.state;
   const index = event.target.value;
+  const itemId = quantidade[index][0].id;
   if (quantidade[index].length > 1) {
     quantidade[index].pop();
     this.setState({
       quantidade,
     });
+    let conteudoCarrinho = localStorage.getItem('carrinho');
+    conteudoCarrinho = JSON.parse(conteudoCarrinho);
+    const popIndex = conteudoCarrinho.findIndex((itemCarr) => itemCarr.id === itemId);
+    console.log(conteudoCarrinho);
+    conteudoCarrinho.splice(popIndex, 1);
+    console.log(conteudoCarrinho);
+    const carrinhoString = JSON.stringify(conteudoCarrinho);
+    localStorage.setItem('carrinho', carrinhoString);
+    let contador = localStorage.getItem('quantidade');
+    contador = parseInt(contador, 10) - 1;
+    localStorage.setItem('quantidade', contador);
   }
 }
 
-aumentarQuantidade = (event) => {
+aumentarQuantidade = (event, qtdDisponivel) => {
   const { quantidade } = this.state;
   const index = event.target.value;
   const itemSelecionado = quantidade[index][0];
-  quantidade[index].push(itemSelecionado);
-  this.setState({
-    quantidade,
+  if (qtdDisponivel > 0) {
+    quantidade[index].push(itemSelecionado);
+    this.setState({
+      quantidade,
+    });
+    let conteudoCarrinho = localStorage.getItem('carrinho');
+    conteudoCarrinho = JSON.parse(conteudoCarrinho);
+    conteudoCarrinho.push(itemSelecionado);
+    const carrinhoString = JSON.stringify(conteudoCarrinho);
+    localStorage.setItem('carrinho', carrinhoString);
+    let contador = localStorage.getItem('quantidade');
+    contador = parseInt(contador, 10) + 1;
+    localStorage.setItem('quantidade', contador);
+  }
+}
+
+filtraCompra = (compra) => {
+  const arrRetorno = [];
+  compra.forEach((item) => {
+    if (arrRetorno.length === 0) {
+      arrRetorno.push(item);
+    }
+    const existInArray = arrRetorno.some((elem) => elem.id === item.id);
+    if (existInArray === false) {
+      arrRetorno.push(item);
+    }
   });
+  return arrRetorno;
 }
 
 filtraCarrinho = () => {
   const { compra } = this.state;
-  const produtos = [...new Set(compra)];
+  const produtos = this.filtraCompra(compra);
+  console.log(produtos);
   const quantidade = produtos.map((produto) => compra
     .filter((item) => item.id === produto.id));
   this.setState({ produtos, quantidade });
@@ -78,7 +118,9 @@ render() {
               <button
                 type="button"
                 data-testid="product-increase-quantity"
-                onClick={ this.aumentarQuantidade }
+                onClick={ (event) => this
+                  .aumentarQuantidade(event, produto
+                    .available_quantity - quantidade[index].length) }
                 value={ index }
               >
                 +
